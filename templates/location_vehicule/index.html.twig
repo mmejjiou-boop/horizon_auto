@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Locations{% endblock %}
+
+{% block body %}
+    <h1>Liste des locations</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Client</th>
+                <th>Véhicule</th>
+                <th>Début</th>
+                <th>Fin prévue</th>
+                <th>Retour effectif</th>
+                <th>Options</th>
+                <th>Montant total</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for location_vehicule in location_vehicules %}
+            <tr>
+                <td>{{ location_vehicule.id }}</td>
+                <td>{{ location_vehicule.client }}</td>
+                <td>{{ location_vehicule.vehicule }}</td>
+                <td>{{ location_vehicule.dateDebut ? location_vehicule.dateDebut|date('d/m/Y') : '' }}</td>
+                <td>{{ location_vehicule.dateFinPrevue ? location_vehicule.dateFinPrevue|date('d/m/Y') : '' }}</td>
+                <td>{{ location_vehicule.dateRetourEffective ? location_vehicule.dateRetourEffective|date('d/m/Y') : 'Non rendu' }}</td>
+                <td>
+                    {% for lo in location_vehicule.locationOptions %}
+                        {{ lo.option.nom }}{% if not loop.last %}, {% endif %}
+                    {% else %}
+                        -
+                    {% endfor %}
+                </td>
+                <td>{{ location_vehicule.montantTotal is not null ? location_vehicule.montantTotal ~ ' €' : '' }}</td>
+                <td>
+                    <a href="{{ path('app_location_vehicule_show', {'id': location_vehicule.id}) }}">show</a>
+                    <a href="{{ path('app_location_vehicule_edit', {'id': location_vehicule.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_location_vehicule_new') }}">Create new</a>
+{% endblock %}

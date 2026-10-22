@@ -1,0 +1,54 @@
+1 création des table dans la base de donnée en SQL
+
+
+CREATE TABLE CLIENT (
+    id_client INT PRIMARY KEY,
+    nom VARCHAR(50),
+    prenom VARCHAR(50),
+    email VARCHAR(100),
+    telephone VARCHAR(20)
+);
+
+CREATE TABLE CATEGORIE (
+    id_categorie INT PRIMARY KEY,
+    nom_categorie VARCHAR(50)
+);
+
+CREATE TABLE VEHICULE (
+    id_vehicule INT PRIMARY KEY,
+    immatriculation VARCHAR(20),
+    marque VARCHAR(50),
+    modele VARCHAR(50),
+    id_categorie INT,
+    FOREIGN KEY (id_categorie) REFERENCES CATEGORIE(id_categorie)
+);
+
+
+CREATE TABLE OPTION (
+    id_option INT PRIMARY KEY,
+    nom_option VARCHAR(100)
+);
+
+CREATE TABLE location_Vehicule (
+  id_location INT AUTO_INCREMENT PRIMARY KEY,
+  date_debut DATE NOT NULL,
+  date_fin_prevue DATE NOT NULL,
+  date_retour_effective DATE NULL,
+  montant_total DECIMAL(10,2),
+  id_client INT NOT NULL,
+  id_vehicule INT NOT NULL,
+  FOREIGN KEY (id_client) REFERENCES Client(id),
+  FOREIGN KEY (id_vehicule) REFERENCES Vehicule(id)
+) ENGINE=InnoDB;
+
+
+
+CREATE TABLE Location_Option (
+  id_location INT NOT NULL,
+  id_option INT NOT NULL,
+  prix_applique DECIMAL(8,2) NOT NULL,
+  PRIMARY KEY (id_location, id_option),
+  FOREIGN KEY (id_location) REFERENCES location_Vehicule(id_location),
+  FOREIGN KEY (id_option) REFERENCES `Option`(id)
+) ENGINE=InnoDB;
+
